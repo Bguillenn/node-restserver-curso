@@ -1,6 +1,10 @@
 require('./config/config.js');
 
 const express = require('express');
+const mongoose = require('mongoose');
+
+
+
 const app = express();
 
 const bodyParser = require('body-parser');
@@ -9,32 +13,18 @@ app.use(bodyParser.urlencoded({extended: false}))
 // Parse application/json
 app.use(bodyParser.json())
 
-app.get('/usuario', function(req, res){
-    res.json('get Usuario')
-});
-
-app.post('/usuario', function(req, res){
-
-    let body = req.body;
-
-    res.json({
-        persona: body
-    })
-});
-
-app.put('/usuario/:id', function(req, res){
-
-    let id = req.params.id;
-
-    res.json({id});
-});
-
-app.delete('/usuario', function(req, res){
-    res.json('delete Usuario')
-});
+app.use( require('./routes/usuario') );
 
 
+//Conexion a la base de datos de mongoDB
+mongoose.connect(process.env.URLDB, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true } ,
+(err, res) => {
+    
+    if(err) throw err;
+    console.log('Base de datos conectada correctamente!');
+})
 
+//Aperturando la conexion al servidor web en el puerto configurado (LOCAL: 3000)
 app.listen(process.env.PORT, () => {
     console.log("Escuchando el puerto: ", 3000)
 });
