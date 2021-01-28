@@ -3,17 +3,19 @@ require('./config/config.js');
 const express = require('express');
 const mongoose = require('mongoose');
 
-
-
 const app = express();
 
+
+//BODY PARSER
 const bodyParser = require('body-parser');
 // Parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extended: false}))
 // Parse application/json
 app.use(bodyParser.json())
 
-app.use( require('./routes/usuario') );
+
+//Importacion global de rutas
+app.use( require('./routes/index') );
 
 
 //Conexion a la base de datos de mongoDB
